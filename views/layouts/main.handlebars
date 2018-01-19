@@ -1,12 +1,24 @@
 <!DOCTYPE html>
+<style>
+/* Log test */
+.logtest {
+    display: none;
+}
+body.logged .logtest{
+    display: block;
+}
+</style>
 <head>
     <title>Placeholder here</title>
 
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="../../style.css"/>
 </head>
 
-<body>
+<body class="{{bodytype}}">
+    <p class="logtest">You're logged in as {{user.username}}</p>
     <p>[Main Layout]</p>
+
 
     {{{body}}}
 </body>

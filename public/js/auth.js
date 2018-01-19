@@ -1,0 +1,26 @@
+$('#register').submit(function (e) {
+  let timerFunc;
+
+  e.preventDefault();
+  let username = $('#username').val();
+  let password = $('#password').val();
+
+  let data = {
+      "username": username,
+      "password": password
+  }
+
+  $.post('/register', data, function(data){
+      window.location.replace("/");
+  }).catch((err) => {
+      console.log(err.responseText)
+      clearTimeout(timerFunc)
+      $('#errorbox').html(err.responseText)
+      $('#errorbox').show()
+      timerFunc = window.setTimeout(hidewindow, 1000)
+  })
+
+  const hidewindow = function(){
+      $('#errorbox').fadeOut(400)
+  }
+});
