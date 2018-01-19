@@ -1,0 +1,23 @@
+<!-- For new posts -->
+<div id="errorbox" class="alert alert-danger" style="opacity: 0">You shouldn't be seeing this</div>
+
+
+<form id="register" method="POST" action="/register">
+    <legend>Register</legend>
+
+    <div class="username auth-form">
+        <label for="username"><em>Username</em></label>
+        <input id="username" name="username" type="text"></input>
+    </div>
+
+    <div class="password auth-form">
+        <label for="password"><em>Password</em></label>
+        <input id="password" name="password" type="password"></input>
+    </div>
+
+    <div class="submit auth-form">
+        <button type="submit" class="auth-submit-btn">Submit</button>
+        <a class="btn btn-danger" href="/" role="button">Cancel</a>
+    </div>
+
+</form>
