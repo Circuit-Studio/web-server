@@ -15,7 +15,7 @@ module.exports = {
       }
       next()
     },
-    // Check to see if user is logged in
+    // If logged in, add class to display certain buttons
     checkLog: (page, user) => {
         return user ? page + " logged" : page
     }

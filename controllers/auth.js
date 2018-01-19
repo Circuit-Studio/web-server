@@ -9,7 +9,7 @@ module.exports = function(app) {
         let bodytype = utils.checkLog("register", req.user)
         res.render('auth/register', {bodytype, user: req.user})
     })
-
+    // Register - POST
     app.post('/register', (req, res) => {
         let user = new User(req.body);
         let username = user.username
@@ -36,8 +36,43 @@ module.exports = function(app) {
                 })
             }
         }).catch((err) => {
-            console.log(err, "Something happened while registering")
+            res.send(err.message)
         })
     });
 
+    // Login
+    app.get('/login', (req, res) => {
+        let bodytype = utils.checkLog("login", req.user)
+        res.render('auth/login', {bodytype, user: req.user});
+    });
+
+    // Login - POST
+    app.post('/login', (req, res) => {
+        User.findOne({ username: req.body.username }, "+password").then((user) => {
+            if(!user){
+                // If user does not exist, return error
+                return res.status(401).send('Wrong email or password');
+            }
+            user.comparePassword(req.body.password, (err, isMatch) => {
+                if(!isMatch){
+                    // If password does not match, return error
+                    return res.status(401).send('Wrong email or password');
+                }
+                else{
+                    // Else, make a cookie
+                    let token = jwt.sign({ _id: user._id, username: user.username }, process.env.SECRET, { expiresIn: "60 days" });
+                    res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
+                    res.redirect('/');
+                }
+            })
+        }).catch((err) => {
+            res.send(err.message)
+        })
+    });
+
+    // Logout
+    app.get('/logout', (req, res) => {
+        res.clearCookie('nToken');
+        res.redirect('/');
+    });
 }

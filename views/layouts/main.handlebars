@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <style>
 /* Log test */
-.logtest {
+.logged-in {
     display: none;
 }
-body.logged .logtest{
+
+.logged-out{
+    display: block
+}
+
+body.logged .logged-in{
     display: block;
+}
+
+body.logged .logged-out{
+    display: none;
 }
 </style>
 <head>
@@ -16,7 +25,15 @@ body.logged .logtest{
 </head>
 
 <body class="{{bodytype}}">
-    <p class="logtest">You're logged in as {{user.username}}</p>
+    <!-- A bunch of placeholder stuff
+    Fix as need be -->
+    <a href="/">Home</a>
+    <p class="logged-in">You're logged in as {{user.username}}</p>
+    <a class="logged-out"href="/register">Temp link to register</a>
+    <a class="logged-out"href="/login">Temp link to login</a>
+    <a class="logged-in" href="/logout">Temp link to logout (should only seen if logged)</a>
+
+
     <p>[Main Layout]</p>
 
 

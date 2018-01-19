@@ -24,3 +24,28 @@ $('#register').submit(function (e) {
       $('#errorbox').fadeOut(400)
   }
 });
+
+$('#login').submit(function (e) {
+  let timerFunc;
+
+  e.preventDefault();
+  let username = $('#username').val();
+  let password = $('#password').val();
+
+  let data = {
+      "username": username,
+      "password": password
+  }
+
+  $.post('/login', data, function(data){
+      window.location.replace("/");
+  }).catch((err) => {
+      $('#errorbox').html(err.responseText)
+      $('#errorbox').show()
+      timerFunc = window.setTimeout(hidewindow, 1000)
+  })
+
+  const hidewindow = function(){
+      $('#errorbox').fadeOut(400)
+  }
+});
