@@ -27,7 +27,7 @@ app.use(express.static('public'));
 // Database Models - Mongoose
 // NOTE: change the mongodb location as needed, please.
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/circuit-studio', {useMongoClient: true});
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/circuit-studio');
 
 // View Engine - Handlebars
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));

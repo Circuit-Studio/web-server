@@ -31,12 +31,10 @@ module.exports = function(app) {
                     let token = jwt.sign({ _id: user._id, username: user.username }, process.env.SECRET, { expiresIn: "60 days" });
                     res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
                     res.redirect('/');
-                }).catch((err) => {
-                    res.send(err.message);
                 });
             }
         }).catch((err) => {
-            res.send(err.message);
+            console.log(err);
         });
     });
 
@@ -66,7 +64,7 @@ module.exports = function(app) {
                 }
             });
         }).catch((err) => {
-            res.send(err.message);
+            console.log(err);
         });
     });
 
