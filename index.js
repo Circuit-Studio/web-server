@@ -22,11 +22,11 @@ app.use(utils.checkAuth);  // Check auth
 
 
 // Resources - Public
-app.use(express.static('public'))
+app.use(express.static('public'));
 
 // Database Models - Mongoose
 // NOTE: change the mongodb location as needed, please.
-mongoose.Promise = global.Promise
+mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/circuit-studio', {useMongoClient: true});
 
 // View Engine - Handlebars

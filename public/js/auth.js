@@ -8,21 +8,21 @@ $('#register').submit(function (e) {
   let data = {
       "username": username,
       "password": password
-  }
+  };
 
   $.post('/register', data, function(data){
       window.location.replace("/");
   }).catch((err) => {
-      console.log(err.responseText)
-      clearTimeout(timerFunc)
-      $('#errorbox').html(err.responseText)
-      $('#errorbox').show()
-      timerFunc = window.setTimeout(hidewindow, 1000)
-  })
+      console.log(err.responseText);
+      clearTimeout(timerFunc);
+      $('#errorbox').html(err.responseText);
+      $('#errorbox').show();
+      timerFunc = window.setTimeout(hidewindow, 1000);
+  });
 
   const hidewindow = function(){
-      $('#errorbox').fadeOut(400)
-  }
+      $('#errorbox').fadeOut(400);
+  };
 });
 
 $('#login').submit(function (e) {
@@ -35,17 +35,17 @@ $('#login').submit(function (e) {
   let data = {
       "username": username,
       "password": password
-  }
+  };
 
   $.post('/login', data, function(data){
       window.location.replace("/");
   }).catch((err) => {
-      $('#errorbox').html(err.responseText)
-      $('#errorbox').show()
-      timerFunc = window.setTimeout(hidewindow, 1000)
-  })
+      $('#errorbox').html(err.responseText);
+      $('#errorbox').show();
+      timerFunc = window.setTimeout(hidewindow, 1000);
+  });
 
   const hidewindow = function(){
-      $('#errorbox').fadeOut(400)
-  }
+      $('#errorbox').fadeOut(400);
+  };
 });

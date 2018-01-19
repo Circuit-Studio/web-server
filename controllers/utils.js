@@ -13,11 +13,11 @@ module.exports = {
         let decodedToken = jwt.decode(token, { complete: true }) || {};
         req.user = decodedToken.payload;
       }
-      next()
+      next();
     },
     // If logged in, add class to display certain buttons
     checkLog: (page, user) => {
-        return user ? page + " logged" : page
+        return user ? page + " logged" : page;
     }
 
-}
+};
