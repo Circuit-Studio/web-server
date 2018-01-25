@@ -4,13 +4,16 @@ $('#register').submit(function (e) {
   e.preventDefault();
   let username = $('#username').val();
   let password = $('#password').val();
+  let email = $('#email').val();
 
   let data = {
       "username": username,
-      "password": password
+      "password": password,
+      "email": email
   };
 
   $.post('/register', data, function(data){
+      console.log(data)
       window.location.replace("/");
   }).catch((err) => {
       console.log(err.responseText);

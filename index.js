@@ -16,10 +16,9 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
+// Auth
 app.use(cookieParser());
 app.use(utils.checkAuth);  // Check auth
-
 
 // Resources - Public
 app.use(express.static('public'));
@@ -32,6 +31,13 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/circuit-studio'
 // View Engine - Handlebars
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
+
+if(process.env.STATUS == "development"){
+    const api = process.env.STAGING_API_URL;
+}
+else if(process.env.STATUS == "production"){
+    const api = process.env.PRODUCTION_API_URL;
+}
 
 // Controllers
 require('./controllers/home.js')(app);

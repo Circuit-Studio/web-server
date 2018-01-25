@@ -1,7 +1,16 @@
-const User = require('../models/user.js');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const utils = require('./utils');
+const http = require('http');
+
+// if(process.env.STATUS == "development"){
+//     const api = process.env.STAGING_API_URL;
+// }
+// else if(process.env.STATUS == "production"){
+//     const api = process.env.PRODUCTION_API_URL;
+// }
+
+const api = process.env.STAGING_API_URL;
 
 module.exports = function(app) {
     // Register page
@@ -9,33 +18,39 @@ module.exports = function(app) {
         let bodytype = utils.checkLog("register", req.user);
         res.render('auth/register', {bodytype, user: req.user});
     });
+
     // Register - POST
     app.post('/register', (req, res) => {
-        let user = new User(req.body);
-        let username = user.username;
-        let password = user.password;
-
-        // Cannot leave empty
-        if((!username) || (!password)){
-            return res.status(400).send('Cannot leave fields empty');
-        }
-
-        User.findOne({ 'username': username }).then((checkuser) => {
-            // Check if user already exists
-            if(checkuser){
-                return res.status(400).send('Username already exists');
+        let postData = JSON.stringify(req.body);
+        const post_options = {
+            hostname: String(api),
+            port: 80,
+            path: '/auth/register',
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+                'accept': 'application/json'
             }
-            else{
-            // Saving user and jwt token
-                user.save(() => {
-                    let token = jwt.sign({ _id: user._id, username: user.username }, process.env.SECRET, { expiresIn: "60 days" });
-                    res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
-                    res.redirect('/');
-                });
-            }
-        }).catch((err) => {
-            console.log(err);
+        };
+
+        const post_req = http.request(post_options, (res) => {
+            console.log(`STATUS: ${res.statusCode}`);
+            console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+            res.setEncoding('utf8');
+            res.on('data', (chunk) => {
+                console.log("Response" + chunk);
+            });
+            res.on('end', () => {
+                console.log('No more data in response.');
+            });
         });
+
+        req.on('error', (e) => {
+          console.error(`problem with request: ${e.message}`);
+        });
+
+        post_req.write(postData);
+        post_req.end();
     });
 
     // Login
@@ -46,26 +61,7 @@ module.exports = function(app) {
 
     // Login - POST
     app.post('/login', (req, res) => {
-        User.findOne({ username: req.body.username }, "+password").then((user) => {
-            if(!user){
-                // If user does not exist, return error
-                return res.status(401).send('Wrong email or password');
-            }
-            user.comparePassword(req.body.password, (err, isMatch) => {
-                if(!isMatch){
-                    // If password does not match, return error
-                    return res.status(401).send('Wrong email or password');
-                }
-                else{
-                    // Else, make a cookie
-                    let token = jwt.sign({ _id: user._id, username: user.username }, process.env.SECRET, { expiresIn: "60 days" });
-                    res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
-                    res.redirect('/');
-                }
-            });
-        }).catch((err) => {
-            console.log(err);
-        });
+
     });
 
     // Logout
