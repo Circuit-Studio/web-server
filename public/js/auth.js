@@ -13,8 +13,7 @@ $('#register').submit(function (e) {
   };
 
   $.post('/register', data, function(data){
-      console.log(data)
-      window.location.replace("/");
+      window.location.assign("/");
   }).catch((err) => {
       console.log(err.responseText);
       clearTimeout(timerFunc);
@@ -32,16 +31,17 @@ $('#login').submit(function (e) {
   let timerFunc;
 
   e.preventDefault();
-  let username = $('#username').val();
+  let email = $('#email').val();
   let password = $('#password').val();
 
   let data = {
-      "username": username,
+      "email": email,
       "password": password
   };
 
   $.post('/login', data, function(data){
-      window.location.replace("/");
+      console.log(data)
+      console.log("HELLO")
   }).catch((err) => {
       $('#errorbox').html(err.responseText);
       $('#errorbox').show();

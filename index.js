@@ -18,7 +18,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Auth
 app.use(cookieParser());
-app.use(utils.checkAuth);  // Check auth
+app.use(utils.checkAuth); // Check auth
+// console.log("Post use")
 
 // Resources - Public
 app.use(express.static('public'));

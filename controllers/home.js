@@ -5,6 +5,7 @@ const utils = require('./utils');
 module.exports = (app) => {
     // Home Page
     app.get('/', (req, res) => {
+        console.log(req.cookies)
         let bodytype = utils.checkLog("home", req.user);
         res.render("home", {bodytype, user: req.user});
     });

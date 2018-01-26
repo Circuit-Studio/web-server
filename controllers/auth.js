@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const utils = require('./utils');
 const http = require('http');
-
+const express = require('express')
 // if(process.env.STATUS == "development"){
 //     const api = process.env.STAGING_API_URL;
 // }
@@ -61,7 +61,35 @@ module.exports = function(app) {
 
     // Login - POST
     app.post('/login', (req, res) => {
+        let postData = JSON.stringify(req.body);
+        var token;
+        const post_options = {
+            hostname: String(api),
+            port: 80,
+            path: '/auth/login',
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+                'accept': 'application/json'
+            }
+        };
+        const post_req = http.request(post_options, function(post_res){
+            post_res.setEncoding('utf8');
+            post_res.on('data', function(chunk){
+                let parsed = JSON.parse(chunk)
+                console.log("Response" + parsed);
+                token = parsed.token
+                console.log(typeof parsed.token, parsed.token)
+                // res.cookie('nToken', parsed.token, { maxAge: 900000, httpOnly: true });
+            });
+            post_res.on('end', function(){
+                console.log('No more data in response.');
+                res.cookie('nToken', token, { maxAge: 900000, httpOnly: false });
+                console.log("Cookies:", res.cookies);
+            });
+        });
 
+        post_req.end(postData);
     });
 
     // Logout
