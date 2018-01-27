@@ -1,12 +1,41 @@
 <!DOCTYPE html>
+<style>
+/* Log test */
+.logged-in {
+    display: none;
+}
+
+.logged-out{
+    display: block
+}
+
+body.logged .logged-in{
+    display: block;
+}
+
+body.logged .logged-out{
+    display: none;
+}
+</style>
 <head>
     <title>Placeholder here</title>
 
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="../../style.css"/>
 </head>
 
-<body>
+<body class="{{bodytype}}">
+    <!-- A bunch of placeholder stuff
+    Fix as need be -->
+    <a href="/">Home</a>
+    <p class="logged-in">You're logged in as {{user.username}}</p>
+    <a class="logged-out"href="/register">Temp link to register</a>
+    <a class="logged-out"href="/login">Temp link to login</a>
+    <a class="logged-in" href="/logout">Temp link to logout (should only seen if logged)</a>
+
+
     <p>[Main Layout]</p>
+
 
     {{{body}}}
 </body>

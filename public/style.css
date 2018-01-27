@@ -1,0 +1,91 @@
+body{
+    font-family: verdana;
+}
+/* * * * * * LOG CHECK * * * * * */
+.logged-in {
+    display: none;
+}
+
+.logged-out{
+    display: block
+}
+
+body.logged .logged-in{
+    display: block;
+}
+
+body.logged .logged-out{
+    display: none;
+}
+
+/* * * * * * AUTH * * * * * */
+.auth-container{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background-color: #F3F3F3;
+    padding: 5px 20px;
+    border-radius: 5px;
+}
+
+.auth-container div{
+    padding: 10px;
+}
+
+/* Input boxes */
+.auth-container input{
+    display: block;
+    margin: 5px auto;
+
+    border-radius: 5px;
+    padding: 10px 10px;
+    font-size: 20px;
+    opacity: 0.5;
+    border: 1px solid #666;
+    box-shadow:
+        inset 0 1px 2px rgba(0,0,0, .35),
+        0px 1px 1px rgba(255,255,255,.3);
+}
+
+.auth-container input:focus, button{
+    outline: none;
+}
+
+.auth-container input:hover{
+    opacity: 1.0;
+    background-color: #FFFFFF;
+}
+
+/* For the submit buttons*/
+.auth-container .auth-buttons{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.auth-container button{
+    padding: 10px;
+    font-size: 12px;
+    background-color: white;
+    border-radius: 5px;
+    margin: 0px 2px;
+}
+
+.auth-container button:focus{
+    background-color: #FAFAFA;
+}
+
+/* Error box */
+#errorbox{
+    display: none;
+    position: absolute;
+
+    padding: 10px 50px;
+    background-color: rgba(255,0,0,0.3);
+
+    left: 50%;
+    top: 15%;
+    transform: translate(-50%, -50%);
+    border-radius: 20px;
+}
