@@ -21,6 +21,22 @@ module.exports = function(app) {
 
     // Register - POST
     app.post('/register', (req, res) => {
+        User.create(req.body).then(user => {
+            let token = User.generateToken();
+
+            if(req.Content = "application/json") {
+                res.send({ user: user, token: token });
+            } else {
+                // SET COOKIE
+                res.redirect('/')
+            }
+
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+
         let postData = JSON.stringify(req.body);
         const post_options = {
             hostname: String(api),
@@ -61,8 +77,10 @@ module.exports = function(app) {
 
     // Login - POST
     app.post('/login', (req, res) => {
+        // Login data
         let postData = JSON.stringify(req.body);
         var token;
+
         const post_options = {
             hostname: String(api),
             port: 80,
@@ -73,23 +91,40 @@ module.exports = function(app) {
                 'accept': 'application/json'
             }
         };
-        const post_req = http.request(post_options, function(post_res){
-            post_res.setEncoding('utf8');
-            post_res.on('data', function(chunk){
-                let parsed = JSON.parse(chunk)
-                console.log("Response" + parsed);
-                token = parsed.token
-                console.log(typeof parsed.token, parsed.token)
-                // res.cookie('nToken', parsed.token, { maxAge: 900000, httpOnly: true });
-            });
-            post_res.on('end', function(){
-                console.log('No more data in response.');
-                res.cookie('nToken', token, { maxAge: 900000, httpOnly: false });
-                console.log("Cookies:", res.cookies);
-            });
-        });
 
-        post_req.end(postData);
+        // const post_req = http.request(post_options, function(post_res){
+        //     post_res.setEncoding('utf8');
+        //
+        //     post_res.on('data', function(chunk){
+        //         // Parsing JSON chunk
+        //         let parsed = JSON.parse(chunk);
+        //         token = parsed.token;
+        //         // Testing to see if token is proper; so far so good
+        //         console.log(typeof parsed.token, parsed.token);
+        //         res.cookie('nToken', parsed.token, { maxAge: 900000, secure: false, httpOnly: false });
+        //         // Checking cookie; it's empty
+        //         console.log("Cookies:", res.cookies);
+        //     });
+        //
+        //     post_res.on('end', function(){
+        //         console.log('No more data in response.');
+        //     });
+        // });
+
+        const post_req = http.request(post_options);
+        post_req.end()
+
+
+        post_req.on('connect', function(chunk) {
+            console.log("I connected!")
+        })
+
+        post_req.on('data', function(chunk) {
+            console.log("I got data!", chunk)
+            console.log(JSON.parse(chunk))
+        })
+
+
     });
 
     // Logout
