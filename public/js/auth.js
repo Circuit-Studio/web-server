@@ -15,7 +15,6 @@ $('#register').submit(function (e) {
   $.post('/register', data, function(data){
       window.location.assign("/");
   }).catch((err) => {
-      console.log(err.responseText);
       clearTimeout(timerFunc);
       $('#errorbox').html(err.responseText);
       $('#errorbox').show();
@@ -40,9 +39,9 @@ $('#login').submit(function (e) {
   };
 
   $.post('/login', data, function(data){
-      console.log(data)
-      console.log("HELLO")
+      window.location.assign("/");
   }).catch((err) => {
+      clearTimeout(timerFunc);
       $('#errorbox').html(err.responseText);
       $('#errorbox').show();
       timerFunc = window.setTimeout(hidewindow, 1000);

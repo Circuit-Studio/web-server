@@ -2,7 +2,9 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const utils = require('./utils');
 const http = require('http');
-const express = require('express')
+const express = require('express');
+const request = require('request');
+
 // if(process.env.STATUS == "development"){
 //     const api = process.env.STAGING_API_URL;
 // }
@@ -21,52 +23,36 @@ module.exports = function(app) {
 
     // Register - POST
     app.post('/register', (req, res) => {
-        User.create(req.body).then(user => {
-            let token = User.generateToken();
-
-            if(req.Content = "application/json") {
-                res.send({ user: user, token: token });
-            } else {
-                // SET COOKIE
-                res.redirect('/')
-            }
-
-        })
-        .catch(err => {
-            console.log(err);
-        });
-
-
+        // Register data
         let postData = JSON.stringify(req.body);
-        const post_options = {
-            hostname: String(api),
-            port: 80,
-            path: '/auth/register',
-            method: 'POST',
+        let route = String(api) + "/auth/register";
+
+        const options = {
+            url: route,
+            json: req.body,
             headers: {
-                'content-type': 'application/json',
-                'accept': 'application/json'
+                'Content-Type' : 'application/json',
+                'Accept': 'application/json',
+                'Accept-Charset': 'utf-8'
             }
         };
 
-        const post_req = http.request(post_options, (res) => {
-            console.log(`STATUS: ${res.statusCode}`);
-            console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
-            res.setEncoding('utf8');
-            res.on('data', (chunk) => {
-                console.log("Response" + chunk);
+        let registerReq = new Promise((resolve, reject) => {
+            request.post(options, function(err, response, body) {
+                if(body.status === 'Success'){
+                    resolve(body.message);
+                }
+                else{
+                    reject(body.message);
+                }
             });
-            res.on('end', () => {
-                console.log('No more data in response.');
-            });
+        }).then((message) => {
+            res.redirect('/login');
+        }).catch((err) => {
+            res.status(401).send(err);
         });
 
-        req.on('error', (e) => {
-          console.error(`problem with request: ${e.message}`);
-        });
 
-        post_req.write(postData);
-        post_req.end();
     });
 
     // Login
@@ -79,50 +65,33 @@ module.exports = function(app) {
     app.post('/login', (req, res) => {
         // Login data
         let postData = JSON.stringify(req.body);
-        var token;
+        let route = String(api) + "/auth/login";
 
-        const post_options = {
-            hostname: String(api),
-            port: 80,
-            path: '/auth/login',
-            method: 'POST',
+        const options = {
+            url: route,
+            json: req.body,
             headers: {
-                'content-type': 'application/json',
-                'accept': 'application/json'
+                'Content-Type' : 'application/json',
+                'Accept': 'application/json',
+                'Accept-Charset': 'utf-8'
             }
         };
 
-        // const post_req = http.request(post_options, function(post_res){
-        //     post_res.setEncoding('utf8');
-        //
-        //     post_res.on('data', function(chunk){
-        //         // Parsing JSON chunk
-        //         let parsed = JSON.parse(chunk);
-        //         token = parsed.token;
-        //         // Testing to see if token is proper; so far so good
-        //         console.log(typeof parsed.token, parsed.token);
-        //         res.cookie('nToken', parsed.token, { maxAge: 900000, secure: false, httpOnly: false });
-        //         // Checking cookie; it's empty
-        //         console.log("Cookies:", res.cookies);
-        //     });
-        //
-        //     post_res.on('end', function(){
-        //         console.log('No more data in response.');
-        //     });
-        // });
-
-        const post_req = http.request(post_options);
-        post_req.end()
-
-
-        post_req.on('connect', function(chunk) {
-            console.log("I connected!")
-        })
-
-        post_req.on('data', function(chunk) {
-            console.log("I got data!", chunk)
-            console.log(JSON.parse(chunk))
-        })
+        let loginReq = new Promise((resolve, reject) => {
+            request.post(options, function(err, response, body) {
+                if(body.token){
+                    resolve(body.token);
+                }
+                else{
+                    reject(body.message);
+                }
+            });
+        }).then((token) => {
+            res.cookie('nToken', token, { maxAge: 900000, secure: false, httpOnly: false });
+            res.redirect('/');
+        }).catch((err) => {
+            res.status(401).send(err);
+        });
 
 
     });
