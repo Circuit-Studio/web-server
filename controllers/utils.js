@@ -19,6 +19,14 @@ module.exports = {
     // If logged in, add class to display certain buttons
     checkLog: (page, user) => {
         return user ? page + " logged" : page;
+    },
+    checkStatus: function(){
+        if(process.env.STATUS === "development"){
+            return process.env.STAGING_API_URL;
+        }
+        else if(process.env.STATUS === "production"){
+            return process.env.PRODUCTION_API_URL;
+        }
     }
 
 };

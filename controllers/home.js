@@ -9,6 +9,4 @@ module.exports = (app) => {
         let bodytype = utils.checkLog("home", req.user);
         res.render("home", {bodytype, user: req.user});
     });
-
-
 };

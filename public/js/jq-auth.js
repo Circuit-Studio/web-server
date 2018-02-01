@@ -1,6 +1,7 @@
-$('#register').submit(function (e) {
-  let timerFunc;
+var timerFunc;
 
+
+$('#register').submit(function (e) {
   e.preventDefault();
   let username = $('#username').val();
   let password = $('#password').val();
@@ -15,20 +16,11 @@ $('#register').submit(function (e) {
   $.post('/register', data, function(data){
       window.location.assign("/");
   }).catch((err) => {
-      clearTimeout(timerFunc);
-      $('#errorbox').html(err.responseText);
-      $('#errorbox').show();
-      timerFunc = window.setTimeout(hidewindow, 1000);
+      errorWindow(err);
   });
-
-  const hidewindow = function(){
-      $('#errorbox').fadeOut(400);
-  };
 });
 
 $('#login').submit(function (e) {
-  let timerFunc;
-
   e.preventDefault();
   let email = $('#email').val();
   let password = $('#password').val();
@@ -41,13 +33,20 @@ $('#login').submit(function (e) {
   $.post('/login', data, function(data){
       window.location.assign("/");
   }).catch((err) => {
-      clearTimeout(timerFunc);
-      $('#errorbox').html(err.responseText);
-      $('#errorbox').show();
-      timerFunc = window.setTimeout(hidewindow, 1000);
+      errorWindow(err);
   });
 
-  const hidewindow = function(){
-      $('#errorbox').fadeOut(400);
-  };
 });
+
+// Showing the error window
+const errorWindow = function(err){
+    clearTimeout(timerFunc);
+    $('#errorbox').html(err.responseText);
+    $('#errorbox').show();
+    timerFunc = window.setTimeout(hidewindow, 1000);
+};
+
+// Actually hide it
+const hidewindow = function(){
+    $('#errorbox').fadeOut(400);
+};

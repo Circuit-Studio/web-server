@@ -1,18 +1,9 @@
 const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
 const utils = require('./utils');
 const http = require('http');
 const express = require('express');
 const request = require('request');
 
-// if(process.env.STATUS == "development"){
-//     const api = process.env.STAGING_API_URL;
-// }
-// else if(process.env.STATUS == "production"){
-//     const api = process.env.PRODUCTION_API_URL;
-// }
-
-const api = process.env.STAGING_API_URL;
 
 module.exports = function(app) {
     // Register page
@@ -25,7 +16,7 @@ module.exports = function(app) {
     app.post('/register', (req, res) => {
         // Register data
         let postData = JSON.stringify(req.body);
-        let route = String(api) + "/auth/register";
+        let route = utils.checkStatus() + "/auth/register";
 
         const options = {
             url: route,
@@ -51,8 +42,6 @@ module.exports = function(app) {
         }).catch((err) => {
             res.status(401).send(err);
         });
-
-
     });
 
     // Login
@@ -65,7 +54,7 @@ module.exports = function(app) {
     app.post('/login', (req, res) => {
         // Login data
         let postData = JSON.stringify(req.body);
-        let route = String(api) + "/auth/login";
+        let route = utils.checkStatus() + "/auth/login";
 
         const options = {
             url: route,
@@ -79,21 +68,20 @@ module.exports = function(app) {
 
         let loginReq = new Promise((resolve, reject) => {
             request.post(options, function(err, response, body) {
-                if(body.token){
-                    resolve(body.token);
+                if(body.status === 'Success'){
+                    resolve(body.data.token);
                 }
                 else{
                     reject(body.message);
                 }
             });
         }).then((token) => {
-            res.cookie('nToken', token, { maxAge: 900000, secure: false, httpOnly: false });
+            res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
             res.redirect('/');
         }).catch((err) => {
+            console.log(err)
             res.status(401).send(err);
         });
-
-
     });
 
     // Logout
