@@ -1,0 +1,14 @@
+Feb 2, 2018 - Front-End Todo
+TODO - (in collaboration w/ Mitchell)
+  - Generate a new part rather than drag and drop
+  - Turn boxes into svgs of parts; simple enough, just substitution (?)
+  - Snap to grid? Draggables have a "grid" option, though you did say snap might be a
+    bad idea, some minimal grid snapping would be useful (smaller grid-pixel snap size)
+  - Plan UI; when you click on a part, what are the options? Sketch out ideas
+    - Rotate, delete, flip, highlight current image
+        - Not needed right now; change where part name is shown? Infobox options
+        - Flipping things MIGHT have complications; not a perfect flip
+            - Make copies of certain things?
+    - See Mitchell's sketch for ideas?
+    - Can either be on the top (toolbar) or around currently selected component
+        - More options possible?
