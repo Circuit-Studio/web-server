@@ -1,1 +1,209 @@
-[Home Page]
+<div id="main-wrapper">
+
+  <div id="top-tool-bar"></div>
+
+  <div id="library-wrapper">
+<!--     <div id="category-tabs"></div> -->
+    <div class="component"></div>
+    <div class="component"></div>
+    <div class="component"></div>
+    <div class="component"></div>
+    <div class="component"></div>
+    <div class="component"></div>
+    <div class="component"></div>
+    <div class="component"></div>
+  </div>
+  <div id="grid-wrapper">
+
+  </div>
+</div>
+
+<svg id="svg-container"  ondrop="drop(event)" ondragover="allowDrop(event)">
+		<defs>
+			<g id="capacitor" transform="translate(01.000000, 00.000000)">
+         <rect id="Rectangle" fill-opacity="0.163354846" fill="#FF0000" x="13" y="0" width="20" height="20"></rect>
+         <path d="" id="Path-2" stroke="#979797"></path>
+         <path d="M3,10 L20,10 M26,10 L43,10" id="Path-3" stroke="#979797"></path>
+         <circle id="Oval" stroke="#979797" fill="#D8D8D8" cx="3" cy="10" r="3"></circle>
+         <circle id="Oval-2" stroke="#979797" fill="#D8D8D8" cx="43" cy="10" r="3"></circle>
+         <path d="M20.5,0.5 L20.5,19.5" id="Line" stroke="#979797" stroke-linecap="square"></path>
+         <path d="M25.5,0.5 L25.5,19.5" id="Line-Copy" stroke="#979797" stroke-linecap="square"></path>
+      </g>
+
+      <g id="resistor" class="resistor part" transform="translate(1.000000, 0.000000)">
+        <rect id="Rectangle" fill-opacity="0.163354846" fill="#FF0000" x="13" y="0" width="20" height="20"></rect>
+        <polyline id="Path-3" stroke="#979797" fill="none" points="3 10 13 10 16 5 19 15 22 5 25 15 28 5 31 15 33 10 43 10"></polyline>
+        <circle id="Oval" stroke="#979797" fill="#D8D8D8" cx="3" cy="10" r="3"></circle>
+        <circle id="Oval-2" stroke="#979797" fill="#D8D8D8" cx="43" cy="10" r="3"></circle>
+      </g>
+		</defs>
+
+<!-- 		<use href="#capacitor"></use> -->
+	</svg>
+  <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script> -->
+
+
+    <script>
+      // TODO: add all this to external script doc(s)
+      // ---------------------------------------------------------------------------------------------
+// Helper utilities (eventually move to helpers.js)
+
+// helper function that returns a DOM object:
+
+function get_one_element(name){
+  return document.querySelector(name)
+}
+
+// helper function to look for the closest element via class name:
+
+function closest(elem, selector) {
+  // Borrowed from:
+  // https://gomakethings.com/climbing-up-and-down-the-dom-tree-with-vanilla-javascript/
+  // Element.matches() polyfill
+    if (!Element.prototype.matches) {
+      Element.prototype.matches =
+        Element.prototype.matchesSelector ||
+        Element.prototype.mozMatchesSelector ||
+        Element.prototype.msMatchesSelector ||
+        Element.prototype.oMatchesSelector ||
+        Element.prototype.webkitMatchesSelector ||
+        function(s) {
+          var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+            i = matches.length;
+          while (--i >= 0 && matches.item(i) !== this) {}
+          return i > -1;
+        };
+    }
+    // Get closest match
+    for (; elem && elem !== document; elem = elem.parentNode) {
+      if (elem.matches(selector)) return elem;
+    }
+    return null;
+  }
+
+// -------------------------------------------------------------------------------------
+// Component Class Definition (eventually move to component.js)
+
+(function(){
+  //instert class definition, prototypes, and functional script
+  function Component(component_name, ref_to_def){
+    this.component_name = component_name || 'resistor'
+    this.rot = 0
+    this.el = ref_to_def.cloneNode(true)
+    this.el.style.position = 'absolute'
+    this.el.setAttribute('id', "clone_" + cloneNum)
+    this.el.setAttribute('draggable', 'true')
+    this.el.setAttribute('ondragstart', 'drag(event)')
+  }
+
+  // methods
+  Component.prototype.destroy = function(){
+    // remove this element from the dom
+    this.el.remove()
+    // TODO: remove from the list as well. Should this be here?
+  }
+
+  Component.prototype.update = function(){
+    this.el.style.transform = `rotate(${this.rot})`
+  }
+
+  Component.prototype.rotate = function(){
+    this.rot += 90 % 360
+    this.update()
+  }
+
+  // Component.prototype.
+
+  // make it public and return a new instance
+  window.Component = function(component_name, ref_to_def){
+    return new Component(component_name, ref_to_def)
+  }
+}());
+
+// ------------------------------
+// Dragging Class definition (dragging.js ?)
+
+let dragThing = null
+let cloneNum = 0
+const svg_container = get_one_element('#svg-container')
+const parts = {}
+
+
+
+/*
+    ======= CREATE & DRAG A NEW THING
+            FROM OG COMPONENTS
+            in #library-wrapper =======
+*/
+
+// creates an element from the library of elements
+get_one_element('.component').onmousedown = function(ev){
+  const thing = Component('resistor', get_one_element('#resistor'))
+  cloneNum += 1
+  console.log('thing: ',thing)
+  get_one_element('#svg-container').appendChild(thing.el)
+  // at to dictionary of all existing parts
+  parts['clone_' + (cloneNum - 1)] = thing
+  dragThing = thing
+  console.log(parts)
+
+}
+
+svg_container.onmousedown = function(ev){
+
+     // Look for the element with the class name part in ancestors of the target
+  const selected = closest(ev.target, '.part')
+  if (selected === null) return // End here if we don't find anything
+  // Otherwise get the part from the parts object via it's id
+  const part = parts[selected.getAttribute('id')]
+
+  dragThing = part
+}
+
+
+
+// $('body').on('mousedown','.component', function(ev){
+//     // const pos = $(this).position()
+//     // console.log(pos)
+//     // const thing = document.createElement('div')
+//     const thing = Component('resistor', get_one_element('#resistor'))
+//     cloneNum += 1
+//     console.log('thing: ',thing)
+//     // $('#main-wrapper').append(thing)
+//     // $(thing).addClass('copy')
+//     // $(thing).attr({id: "clone_" + cloneNum, draggable: "true", ondragstart: "drag(event)"})
+//     // dragThing = thing
+//     get_one_element('#svg-container').appendChild(thing)
+//     dragThing = thing
+//
+// })
+
+//$('#grid-wrapper').on('mousedown','.copy', function(ev){
+//    const object_dragging = $(this)
+//    console.log(object_dragging)
+//})
+
+
+
+
+let drag_king = function(ev) {
+
+    if(dragThing === null){
+        return
+    }
+
+    const x = ev.pageX;
+    const y = ev.pageY;
+
+    dragThing.el.style.setProperty('--x', x)
+    dragThing.el.style.setProperty('--y', y)
+}
+
+window.onmousemove = drag_king;
+
+window.onmouseup = function(ev) {
+    dragThing = null
+}
+
+
+    </script>
