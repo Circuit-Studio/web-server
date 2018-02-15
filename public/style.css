@@ -55,8 +55,8 @@ body{
 */
 /*   width:5em;
   height:5em; */
-  width:1em;
-  height:1em;
+  width:3em;
+  height:3em;
   justify-self:center;
   align-self: end;
   border:none;
@@ -74,6 +74,13 @@ body{
 
 }
 
+.part:hover, .part *:hover{
+  cursor: grab;
+}
+
+.part:hover, .part *:active{
+  cursor: grabbing;
+}
 
 
 #grid-wrapper{
@@ -85,7 +92,8 @@ body{
   background-color:rgba(215,237,192,.5);
   --cell-size: 1em;
   /* background-image:
-  linear-gradient(rgba(0,0,0,.3) .1em, transparent .1em), /*minor horiz*/
+    /*minor horiz*/ 
+  linear-gradient(rgba(0,0,0,.3) .1em, transparent .1em), 
   linear-gradient(#1b1e18 .1em, transparent .1em), /*major horiz*/
   linear-gradient(90deg, rgba(0,0,0,.3) .1em, transparent .1em), /*minor vert*/
   linear-gradient(90deg, #1b1e18 .1em, transparent .1em); /*major vert*/ */
@@ -129,21 +137,39 @@ body{
     z-index:40;
 }
 
-g{
+svg > g{
   --x:0;
   --y:0;
   transform:
     translateX(calc(var(--x) * 1px))
     translateY(calc(var(--y) * 1px));
+/*    scale(1.5);*/
   z-index:40;
-  fill:rgba(0,0,0,.5)
+/*  fill:rgba(0,0,0,.5);*/
+/*
   stroke:black;
+    width:3em;
+    height: 3em;
+*/
+    
 }
 
+g *:not(#Rectangle){
+    /* make the lines bolder (except around transparent rectangle) */
+    stroke:black;
+}
+
+polyline{
+    fill= "none";
+}
+
+path{
+    fill= "none";
+}
 #svg-container{
   width:100vw;
   height:100vh;
   position:relative;
   /* z-index:100000; */
-  fill:green;
+  
 }

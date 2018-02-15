@@ -4,11 +4,17 @@
 
   <div id="library-wrapper">
 <!--     <div id="category-tabs"></div> -->
-    <div class="component"></div>
-    <div class="component"></div>
-    <div class="component"></div>
-    <div class="component"></div>
-    <div class="component"></div>
+    <div class="component" id="ph-resistor"> <svg width="3em" height="3em"> {{> resistor-svg}} </svg></div>
+    <div class="component" id="ph-capacitor"> <svg width="3em" height="3em"> {{> capacitor-svg}} </svg> </div>
+    <div class="component" id="ph-switch">
+      <svg width="3em" height="3em"> {{> switch-svg}} </svg> 
+      </div>
+    <div class="component" id="ph-transistor">
+      <svg width="3em" height="3em"> {{> transistor-svg}} </svg> 
+      </div>
+    <div class="component" id="ph-diode">
+            <svg width="3em" height="3em"> {{> diode-svg}} </svg> 
+      </div>
     <div class="component"></div>
     <div class="component"></div>
     <div class="component"></div>
@@ -20,22 +26,18 @@
 
 <svg id="svg-container"  ondrop="drop(event)" ondragover="allowDrop(event)">
 		<defs>
-			<g id="capacitor" transform="translate(01.000000, 00.000000)">
-         <rect id="Rectangle" fill-opacity="0.163354846" fill="#FF0000" x="13" y="0" width="20" height="20"></rect>
-         <path d="" id="Path-2" stroke="#979797"></path>
-         <path d="M3,10 L20,10 M26,10 L43,10" id="Path-3" stroke="#979797"></path>
-         <circle id="Oval" stroke="#979797" fill="#D8D8D8" cx="3" cy="10" r="3"></circle>
-         <circle id="Oval-2" stroke="#979797" fill="#D8D8D8" cx="43" cy="10" r="3"></circle>
-         <path d="M20.5,0.5 L20.5,19.5" id="Line" stroke="#979797" stroke-linecap="square"></path>
-         <path d="M25.5,0.5 L25.5,19.5" id="Line-Copy" stroke="#979797" stroke-linecap="square"></path>
-      </g>
+            
+            {{> capacitor-svg }}
+	
+            {{> resistor-svg }}
+            
+            {{> switch-svg}}
+            
+            {{> transistor-svg}}
+            
+            {{> diode-svg}}
 
-      <g id="resistor" class="resistor part" transform="translate(1.000000, 0.000000)">
-        <rect id="Rectangle" fill-opacity="0.163354846" fill="#FF0000" x="13" y="0" width="20" height="20"></rect>
-        <polyline id="Path-3" stroke="#979797" fill="none" points="3 10 13 10 16 5 19 15 22 5 25 15 28 5 31 15 33 10 43 10"></polyline>
-        <circle id="Oval" stroke="#979797" fill="#D8D8D8" cx="3" cy="10" r="3"></circle>
-        <circle id="Oval-2" stroke="#979797" fill="#D8D8D8" cx="43" cy="10" r="3"></circle>
-      </g>
+
 		</defs>
 
 <!-- 		<use href="#capacitor"></use> -->
@@ -126,8 +128,25 @@ function closest(elem, selector) {
 let dragThing = null
 let cloneNum = 0
 const svg_container = get_one_element('#svg-container')
+const library_wrapper = document.getElementById("library-wrapper")
 const parts = {}
 
+library_wrapper.onmousedown = function(ev){
+    const placeholder_selected = closest(ev.target, '.component')
+    if (placeholder_selected === null) return // end here if we don't find anything
+    const this_part = placeholder_selected.getAttribute('id')
+    console.log(this_part)
+    const format_str = this_part.substring(3)
+    console.log(format_str)
+    const thing = Component(format_str, document.getElementById(format_str))
+    cloneNum += 1
+    console.log('new thing: ', thing)
+    svg_container.appendChild(thing.el)
+    parts['clone_' + (cloneNum - 1)] = thing
+    console.log(parts)
+    dragThing = thing
+    
+}
 
 
 /*
@@ -137,17 +156,17 @@ const parts = {}
 */
 
 // creates an element from the library of elements
-get_one_element('.component').onmousedown = function(ev){
-  const thing = Component('resistor', get_one_element('#resistor'))
-  cloneNum += 1
-  console.log('thing: ',thing)
-  get_one_element('#svg-container').appendChild(thing.el)
-  // at to dictionary of all existing parts
-  parts['clone_' + (cloneNum - 1)] = thing
-  dragThing = thing
-  console.log(parts)
-
-}
+//get_one_element('.component').onmousedown = function(ev){
+//  const thing = Component('resistor', get_one_element('#resistor'))
+//  cloneNum += 1
+//  console.log('thing: ',thing)
+//  get_one_element('#svg-container').appendChild(thing.el)
+//  // at to dictionary of all existing parts
+//  parts['clone_' + (cloneNum - 1)] = thing
+//  dragThing = thing
+//  console.log(parts)
+//
+//}
 
 svg_container.onmousedown = function(ev){
 
@@ -194,9 +213,12 @@ let drag_king = function(ev) {
 
     const x = ev.pageX;
     const y = ev.pageY;
+    
+    const offset_width = 48/2
+    const offset_height = 20/2
 
-    dragThing.el.style.setProperty('--x', x)
-    dragThing.el.style.setProperty('--y', y)
+    dragThing.el.style.setProperty('--x', x - offset_width)
+    dragThing.el.style.setProperty('--y', y - offset_width) //for some reason width works better than height
 }
 
 window.onmousemove = drag_king;
