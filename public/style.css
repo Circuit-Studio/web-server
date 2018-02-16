@@ -1,6 +1,13 @@
 *{
   box-sizing:border-box;
   margin:0;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  --library-color:rgb(103,115,144);
+    --top-tool-bar-color:rgb(141,173,182);
+    --main-color:rgb(185,196,202);
+    
+    --component-size:5;
+    
 }
 body{
   margin:0;
@@ -13,7 +20,7 @@ body{
   display:grid;
   width:100vw;
 /*  grid-template-columns:repeat(12,1fr);*/
-  grid-template-columns:244px auto;
+  grid-template-columns:10em auto;
   grid-template-rows: 2em auto;
   background-color:#a1b290;
   height:100vh;
@@ -27,44 +34,51 @@ body{
 /*  grid-column:1/13;*/
   grid-column:1/3;
   height:3em;
-  background-color:rgb(231,233,236);
+  background-color:var(--top-tool-bar-color);
 }
 
 #library-wrapper{
 /*  grid-column:1/3;*/
   grid-column:1/2;
-  background-color:rgb(64,76,71);
+  background-color:var(--library-color);
 /*   display:flex;
   justify-content:space-evenly;
   flex-flow:row wrap;
   align-content:flex-start; */
-  display:grid;
+  display:flex;
+  flex-direction:column;
+    align-items:center;
+/*  justify-content: center;*/
+/*
   grid-template-columns:repeat(2,1fr);
   grid-auto-rows:7em;
 
   justify-items:center;
 
     justify-content: space-evenly;
+*/
 }
 
 #cs-title{
     text-align: center;
+    color:white;
 }
 
 .component{
-  background-color:rgb(185,196,202);
+  background-color:var(--main-color);
 /*
   width: calc(calc(100vw / 12) * 1.5);
   height:calc(calc(100vw / 12) * 1.5);
 */
 /*   width:5em;
   height:5em; */
-  width:3em;
-  height:3em;
+  width: calc(var(--component-size) * 1em);
+  height:calc(var(--component-size) * 1em);
   justify-self:center;
-  align-self: end;
+/*  align-self: end;*/
   border:none;
   z-index:10;
+  margin-top:.5em;
 
 }
 
@@ -87,14 +101,17 @@ body{
 }
 
 .component > svg{
-    width:3em;
-    height:3em;
+    width: calc(var(--component-size) * 1em);
+  height:calc(var(--component-size) * 1em);
+    position:relative;
 }
 
-.component .part{
+.component > svg .part{
     position: absolute;
+    left:10px;
     
 }
+
 
 
 #grid-wrapper{
@@ -105,7 +122,7 @@ body{
 /*  height:100vh;*/
   align-self:stretch;
   border:none;
-  background-color:rgb(185,196,202);
+  background-color:var(--main-color);
   --cell-size: 1em;
   background-image:
     /*minor horiz*/ 
@@ -140,13 +157,7 @@ body{
 .copy{
     --x: 0;
     --y: 0;
-    /* display:block;
-    width:5em;
-    height:5em; */
-/*    background-color:white;*/
-    /* background-image: url('../../../Desktop/component_svgs/capacitor.svg');
-    background-size: 5em 5em;
-    position:absolute; */
+
     transform:
         translateX(calc(var(--x) * 1px))
         translateY(calc(var(--y) * 1px));
@@ -158,8 +169,8 @@ svg > g{
   --y:0;
   transform:
     translateX(calc(var(--x) * 1px))
-    translateY(calc(var(--y) * 1px));
-/*    scale(1.5);*/
+    translateY(calc(var(--y) * 1px))
+scale(1.5);
   z-index:40;
 /*  fill:rgba(0,0,0,.5);*/
 /*
@@ -197,5 +208,5 @@ path{
 }
 
 #Rectangle{
-    fill: rgb(246,71,68);
+    fill: rgb(0,156,63);
 }

@@ -6,16 +6,16 @@
 
   <div id="library-wrapper">
 <!--     <div id="category-tabs"></div> -->
-    <div class="component" id="ph-resistor"> <svg width="3em" height="3em"> {{> resistor-svg}} </svg></div>
-    <div class="component" id="ph-capacitor"> <svg width="3em" height="3em"> {{> capacitor-svg}} </svg> </div>
+    <div class="component" id="ph-resistor"> <svg> {{> resistor-svg}} </svg></div>
+    <div class="component" id="ph-capacitor"> <svg> {{> capacitor-svg}} </svg> </div>
     <div class="component" id="ph-switch">
-      <svg width="3em" height="3em"> {{> switch-svg}} </svg> 
+      <svg> {{> switch-svg}} </svg> 
       </div>
     <div class="component" id="ph-transistor">
-      <svg width="3em" height="3em"> {{> transistor-svg}} </svg> 
+      <svg> {{> transistor-svg}} </svg> 
       </div>
     <div class="component" id="ph-diode">
-            <svg width="3em" height="3em"> {{> diode-svg}} </svg> 
+            <svg> {{> diode-svg}} </svg> 
       </div>
     <div class="component"></div>
     <div class="component"></div>
@@ -221,7 +221,7 @@ let drag_king = function(ev) {
     const x = ev.pageX;
     const y = ev.pageY;
     
-    const offset_width = 48/2
+    const offset_width = 72/2
     const offset_height = 20/2
 
     dragThing.el.style.setProperty('--x', x - offset_width)
@@ -229,6 +229,7 @@ let drag_king = function(ev) {
 }
 
 window.onmousemove = drag_king;
+window.onmousedown = drag_king;
 
 window.onmouseup = function(ev) {
     dragThing = null
