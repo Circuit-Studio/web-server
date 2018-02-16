@@ -27,13 +27,13 @@ body{
 /*  grid-column:1/13;*/
   grid-column:1/3;
   height:3em;
-  background-color:#869478;
+  background-color:rgb(231,233,236);
 }
 
 #library-wrapper{
 /*  grid-column:1/3;*/
   grid-column:1/2;
-  background-color:#a1b290;
+  background-color:rgb(64,76,71);
 /*   display:flex;
   justify-content:space-evenly;
   flex-flow:row wrap;
@@ -47,8 +47,12 @@ body{
     justify-content: space-evenly;
 }
 
+#cs-title{
+    text-align: center;
+}
+
 .component{
-  background-color:#bccfa8;
+  background-color:rgb(185,196,202);
 /*
   width: calc(calc(100vw / 12) * 1.5);
   height:calc(calc(100vw / 12) * 1.5);
@@ -82,29 +86,41 @@ body{
   cursor: grabbing;
 }
 
+.component > svg{
+    width:3em;
+    height:3em;
+}
+
+.component .part{
+    position: absolute;
+    
+}
+
 
 #grid-wrapper{
+    --grid-color-minor: rgba(231,233,236,.3);
+    --grid-color-major: rgba(231,233,236,.5);
 /*  grid-column:3/13;*/
   grid-column:2/3;
 /*  height:100vh;*/
   align-self:stretch;
   border:none;
-  background-color:rgba(215,237,192,.5);
+  background-color:rgb(185,196,202);
   --cell-size: 1em;
-  /* background-image:
+  background-image:
     /*minor horiz*/ 
-  linear-gradient(rgba(0,0,0,.3) .1em, transparent .1em), 
-  linear-gradient(#1b1e18 .1em, transparent .1em), /*major horiz*/
-  linear-gradient(90deg, rgba(0,0,0,.3) .1em, transparent .1em), /*minor vert*/
-  linear-gradient(90deg, #1b1e18 .1em, transparent .1em); /*major vert*/ */
+  linear-gradient(var(--grid-color-minor) .1em, transparent .1em), 
+  linear-gradient(var(--grid-color-major) .1em, transparent .1em), /*major horiz*/
+  linear-gradient(90deg, var(--grid-color-minor) .1em, transparent .1em), /*minor vert*/
+  linear-gradient(90deg, var(--grid-color-major) .1em, transparent .1em); /*major vert*/ 
 
-  /* background-size:
+  background-size:
     calc(10em / 10) calc(10em / 10),
     10em 10em,
     calc(10em / 10) calc(10em / 10),
     10em 10em,
     10em 10em,
-    10em 10em; */
+    10em 10em; 
 
 /*
     background-size:
@@ -148,8 +164,7 @@ svg > g{
 /*  fill:rgba(0,0,0,.5);*/
 /*
   stroke:black;
-    width:3em;
-    height: 3em;
+   
 */
     
 }
@@ -159,6 +174,12 @@ g *:not(#Rectangle){
     stroke:black;
 }
 
+g polygon{
+    stroke:black;
+    fill: #D8D8D8;
+}
+
+/*
 polyline{
     fill= "none";
 }
@@ -166,10 +187,15 @@ polyline{
 path{
     fill= "none";
 }
+*/
 #svg-container{
   width:100vw;
   height:100vh;
   position:relative;
   /* z-index:100000; */
   
+}
+
+#Rectangle{
+    fill: rgb(246,71,68);
 }

@@ -1,6 +1,8 @@
 <div id="main-wrapper">
 
-  <div id="top-tool-bar"></div>
+  <div id="top-tool-bar">
+    <div id="cs-title">circuit.studio</div>
+    </div>
 
   <div id="library-wrapper">
 <!--     <div id="category-tabs"></div> -->
@@ -103,6 +105,11 @@ function closest(elem, selector) {
     // remove this element from the dom
     this.el.remove()
     // TODO: remove from the list as well. Should this be here?
+  }
+  
+  Component.prototype.resize = function(){
+      this.el.style.scale = null
+      // be able to resize (user input, by certain scale units)
   }
 
   Component.prototype.update = function(){
