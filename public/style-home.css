@@ -1,7 +1,7 @@
 #home-body{
     display: grid;
     height: 100%;
-    grid-template-rows: 1fr 4fr 3fr;
+    grid-template-rows: 1fr 3fr 3fr;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-areas:
         "head head head head"
@@ -32,14 +32,55 @@
             align-self:flex-end;
         }
 
+
     #header-links{
+        display: inline;
         flex-grow: 1;
     }
+
+        #header-links ul{
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            text-align: center;
+        }
+
+        #header-links ul li{
+            display: inline;
+        }
+        #header-links ul li a{
+            text-decoration: none;
+            padding: .2em 1em;
+            color: #fff;
+            background-color: #038;
+        }
 
 #home-jumbotron{
     grid-area: jumb;
     background-color: lightblue;
+
+    display: grid;
+    grid-template-columns: 1fr 2fr;
 }
+    #home-subtitle{
+        grid-column: 1;
+        background-color: orange;
+        padding: 50px 20px;
+    }
+
+        #home-subtitle ul{
+            list-style-type: circle;
+            align-self: center;
+        }
+
+        #home-subtitle ul li{
+            margin: 20px;
+        }
+
+    #home-image{
+        grid-column: 2;
+        background-color: purple;
+    }
 
 #home-info{
     grid-area: info;
