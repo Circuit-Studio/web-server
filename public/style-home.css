@@ -1,0 +1,47 @@
+#home-body{
+    display: grid;
+    height: 100%;
+    grid-template-rows: 1fr 4fr 3fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-areas:
+        "head head head head"
+        "jumb jumb jumb jumb"
+        "info info info info";
+}
+
+#home-header{
+    grid-area: head;
+    display: flex;
+    background-color: pink;
+    /* grid-template-columns: 0.5fr 2fr 2fr 3fr;
+    grid-template-areas:
+        "logo title . link";*/
+    align-items: flex-end;
+    justify-content: space-between;
+}
+    #header-left{
+        display: inline-flex;
+        flex-grow: 1;
+        align-self: center;
+    }
+        #header-logo{
+            align-self: center;
+        }
+        #header-title{
+            margin: 0px 10px;
+            align-self:flex-end;
+        }
+
+    #header-links{
+        flex-grow: 1;
+    }
+
+#home-jumbotron{
+    grid-area: jumb;
+    background-color: lightblue;
+}
+
+#home-info{
+    grid-area: info;
+    background-color: lightgreen;
+}

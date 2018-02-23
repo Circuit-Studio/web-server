@@ -1,5 +1,6 @@
 body{
     font-family: verdana;
+    height: 100%;
 }
 /* * * * * * LOG CHECK * * * * * */
 .logged-in {
