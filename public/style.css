@@ -155,6 +155,11 @@ body{
 
 }
 
+.component > p{
+    text-align:center;
+    font-size:.5em;
+}
+
 /* button mock up sidebar mock up */
 
 .copy{
